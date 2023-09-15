@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id       String @id @default("uuid")
+  username String
+  password String
+}
+
+model Images {
+  id      String  @id @default("uuid")
+  Pages   Pages?  @relation(fields: [pagesId], references: [id])
+  pagesId String?
+}
+
+model Text {
+  id      String  @id @default("uuid")
+  Pages   Pages?  @relation(fields: [pagesId], references: [id])
+  pagesId String?
+}
+
+model Nav {
+  id    String @id @default("uuid")
+  text  String
+  links String
+}
+
+model Pages {
+  id      String   @id @default("uuid")
+  link    String
+  images  Images[]
+  content Text[]
+}
+
+model mambers {
+  id      String  @id @default("uuid")
+  name    String
+  role    String
+  clubs   clubs?  @relation(fields: [clubsId], references: [id])
+  clubsId String?
+}
+
+model clubs {
+  id      String    @id @default("uuid")
+  name    String
+  mambers mambers[]
+}
